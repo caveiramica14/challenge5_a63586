@@ -25,6 +25,13 @@ public class Target : MonoBehaviour
             Debug.Log("Mouse Clicked");
             Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
             Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 2.0f);
+            if (Physics.Raycast(ray, out RaycastHit hitInfo))
+            {
+                if (hitInfo.transform == transform)
+                {
+                    Destroy(gameObject);
+                }
+            }
         }
     }
     Vector3 RandomForce()
@@ -40,7 +47,11 @@ public class Target : MonoBehaviour
     {
         return new Vector3(Random.Range(-xRange, xRange), ySpawnPos);
     }
-
-    // Update is called once per frame
-    
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("DestroyZone"))
+        {
+            Destroy(gameObject);
+        }   
+    } 
 }
